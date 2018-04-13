@@ -1,0 +1,63 @@
+//Antonio Cardona Costa
+
+//io
+#include <stdio.h>
+//error
+#include <errno.h>
+#include <string.h>
+//setuid
+#include <unistd.h>
+#include <sys/types.h>
+//time
+#include <time.h>
+#include <sys/time.h>
+//Para que funcione lo del time usar al llamar realtime*
+
+/*
+//funciones de tiempo
+time_t time(time_t *t);
+int clock_gettime(clockid_t id, struct timespec *res);
+int clock_settime(clockid_t id, struct timespec *tp);
+size_t strftime (char* s, size_t max, const char* format, const struct tm *tm);
+//Funciones de sleep
+int nanosleep (const struct timespec *req, struct timespec* rem);
+int usleep (useconds_t usec);
+unsigned int sleep (unsigned int seconds);
+
+//Variables
+struct timespec {
+	time_t tv_sec;
+	long tv_nsec;
+}
+const char *sys_errlist[];
+int sys_nerr;
+int errno;
+*/
+
+//Cuerpos de funciones
+
+int main() {
+   /* Comprobar la ocurrencia de error y notificarlo con la llamada perror(3) */ 
+    int result;
+    int errsv;
+    //setuid(0);
+    result = setuid(2); 
+    if (result != 0) {
+	//Ejercicio 1
+	errsv = errno;
+	perror("(perror) Error: ");
+	//Ejercicio 2
+	printf("(printf) Error: %i", errsv);
+	strerror(errsv);
+    }
+    //Ejercicio 3
+    time_t time(time_t* t); //trabajando en ello
+    char* c_time_string;
+    if (t != NULL){
+  	printf("Current time is %s", c_time_string);
+    }
+    
+    return 1;
+}
+
+
