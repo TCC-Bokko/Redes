@@ -35,7 +35,7 @@ int main() {
     //Ejercicio 4
     char buffer[26]; //Minimo necesario segun man
     ctime_r(&t, buffer); //ver man ctime_r: transforma la info del time_t a un formato legible
-    std::cout << "[P2.1 Ej.4] Date & time: " << buffer << std:endl;
+    std::cout << "[P2.1 Ej.4] Date & time: " << buffer << std::endl;
 
     //Ejercicio 5
     //Ver: https://www.gnu.org/software/libc/manual/html_node/Elapsed-Time.html
@@ -45,8 +45,10 @@ int main() {
 
     clock_gettime(CLOCK_REALTIME, &inicio); //tomar tiempo al inicio
     
-    for (int i = 0; i < 10000; i+){} 
-    
+    int i = 0;
+
+    while ( i < 10000) { i++; }
+
     clock_gettime(CLOCK_REALTIME, &fin); //tomar tiempo al final
 
     long int diff = in.tv_nsec-inicio.tv_nsec;
