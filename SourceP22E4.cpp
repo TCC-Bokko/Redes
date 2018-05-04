@@ -70,8 +70,14 @@ int main(int argc, char** argv){
 	while (true) {
 		char buffer[256]; //Creamos un contenedor del mensaje lo suficientemente grande.
 		
-		//Recibimos el mensaje
+		//Recibimos el mensaje y almacenamos su tamaño en "s"
 		ssize_t s = recv(sd_src, buffer, 255, 0);
+		
+		//Llamar al cierre si se desconecta el cliente, eso ocurre cuando el núm bytes es 0 (s == 0)
+		if (s == 0){
+			std::cout << "Fin de la conexión. Cerrando." << std::endl;	//Notificamos cierre
+			break; 								//rompemos el bucle
+		 }		
 
   		//Mostrar información obtenida
   		std::cout << "Mensaje:" << buffer << std::endl; //buffer contiene en fin de línea
@@ -79,7 +85,8 @@ int main(int argc, char** argv){
 		//Devolvemos el mensaje (eco)
 		send(sd_src, buffer, s, 0);
 		
-		//Llamar al cierre si se desconecta el cliente
+		
+
 	}
 
 
