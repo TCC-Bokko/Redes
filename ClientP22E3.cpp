@@ -16,7 +16,13 @@
 
 //io
 #include <stdio.h> 
-#include <iostream>
+#include <iostream>file:///home/lab_redes/clons
+file:///home/lab_redes/images
+file:///home/lab_redes/clean
+file:///home/lab_redes/README
+file:///home/lab_redes/vlab.sh
+file:///home/lab_redes/vregenerate
+
 #include <string.h>
 
 
@@ -30,10 +36,8 @@ int main(int argc, char** argv){
 	std::cout << "argv[3]: " << argv[3] << std::endl; //t
 	*/
 	
-	// ---------------------
-	// 1. Inicializar socket
-	// ---------------------
-	struct addrinfo hints; //socket
+	// Inicializar socket
+	struct addrinfo hints; //socket //V
 	struct addrinfo* res;  //puntero al socket
 
 	memset((void*) &hints,'\0', sizeof(struct addrinfo)); 	//inicializamos socket
@@ -44,28 +48,32 @@ int main(int argc, char** argv){
 	//Obtener información de la dirección y almacenar resultado operacion
 	int rc = getaddrinfo(argv[1], argv[2], &hints, &res);
 
+	//Gestión de errores
 	if(rc != 0){
 		std::cout << "Error getaddrinfo(): " << gai_strerror(rc) << std::endl;
 		return -1;
 	}
 	
-	//sd es el socket descriptor
-	int sd = socket(res->ai_family, res->ai_socktype, 0);
-	bind(sd,res->ai_addr, res->ai_addrlen); //UDP
+	//Asignamos un descriptor al socket (sd = Socket descriptor)
+	int sd = socket(res->ai_family, res->ai_socktype, 0);//V
 
+	//Mensaje
+	char buffer[80];
 
-	//Creamos variables donde almacenaremos los datos del servidor
-	struct sockaddr server;		
-	socklen_t server_len = sizeof(struct sockaddr);
-	char host[NI_MAXHOST]; //IP
-	char serv [NI_MAXSERV]; //Puerto
-	//char buffer[2]; //Creamos un contenedor del mensaje lo suficientemente grande. Como es un comando
+	//Enviamos el mensaje recibido por argumento
+	size_t bytesSent = sendto(sd, argv[3], 2, 0, (struct sockaddr *) res->ai_addr, res->ai_addrlen);
 
-	//buffer[0] = argv[3];
-	//buffer[1] = '\0';	
+	//Recibimos
+	int bytesRecv = recvfrom(sd, buffer, 80, 0, (struct sockaddr *) res->ai_addr, &res->ai_addrlen);
 
-	//Generamos el mensaje
-	sendto(sd, argv[3], 2, 0, (struct sockaddr*) &server, server_len);
+	//Ponemos final de línea al mensaje recibido
+	buffer[bytesRecv] = '\0';
 
+	//Escribimos el mensaje recibido
+	std::cout << buffer << "\n";
+
+		freeaddrinfo(res);
+	return 0;
 }
+
 
