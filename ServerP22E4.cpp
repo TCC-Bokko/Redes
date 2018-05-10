@@ -66,7 +66,7 @@ int main(int argc, char** argv){
 	socklen_t client_len = sizeof(struct sockaddr);	//Asignamos tamaño
 	char host[NI_MAXHOST];							//IP
 	char serv [NI_MAXSERV];							//Puerto
-	char buffer[80];								//Mensajee
+	char buffer[256];								//Mensajee
 
 
 	//-----------------------------
@@ -86,6 +86,10 @@ int main(int argc, char** argv){
   		//Procesado de cada conexión
   		while (true){
 
+  			//recibimos el mensaje y almacenamos su tamaño en "s"
+  			ssize_t s = recv(csd, buffer, 255, 0);
+
+  			/*
 	  		int c = 0; //Tamaño mensaje
 	  		int i = 0; //indice para almacenar mensaje
 
@@ -93,16 +97,17 @@ int main(int argc, char** argv){
 	  		do {
 	        	c = recv(csd, &(buffer[i]), 1, 0);
 	  		} while ( c >= 0 && i < 79 && buffer[i++] != '\n');
-	  		
+	  		*/
+
 	  		//Gestión de la desconexión del cliente
-	  		if(c == 0)
+	  		if(s == 0)
 	  		{
 	  			close(csd);	//Cierra el socket
 	  			break;		//Rompe el bucle que gestiona esta conexion
 	  		} 
 
 	  		//Mandamos el cliente el eco de su mensaje almacenado en el buffer
-	  		send(csd, buffer, i, 0);
+	  		send(csd, buffer, s, 0);
   		}
 
   		std:: cout << "Cliente " << host << ":" << serv << " desconectado\n";
