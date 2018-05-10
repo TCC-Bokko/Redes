@@ -89,16 +89,6 @@ int main(int argc, char** argv){
   			//recibimos el mensaje y almacenamos su tamaño en "s"
   			ssize_t s = recv(csd, buffer, 255, 0);
 
-  			/*
-	  		int c = 0; //Tamaño mensaje
-	  		int i = 0; //indice para almacenar mensaje
-
-	  		//Recepción y almacenado del mensaje
-	  		do {
-	        	c = recv(csd, &(buffer[i]), 1, 0);
-	  		} while ( c >= 0 && i < 79 && buffer[i++] != '\n');
-	  		*/
-
 	  		//Gestión de la desconexión del cliente
 	  		if(s == 0)
 	  		{
